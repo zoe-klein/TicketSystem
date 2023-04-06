@@ -1,41 +1,29 @@
 
 var express = require('express');
 var app = express();
+var bodyparser = require('body-parser');
 
-const body_parser = require('body-parser');
-app.use(body_parser.json());
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
 
 var tickets = [
         {
             "id": 1,
             "created_at": "2015-07-20T22:55:29Z",
-            "updated_at": "2016-05-05T10:38:52Z",
-            "type": "incident",
             "subject": "MFP not working right",
             "description": "PC Load Letter? What does that even mean???",
-            "priority": "med",
             "status": "open",
             "recipient": "support_example@selu.edu",
-            "submitter": "Michael_bolton@selu.edu",
-            "assignee_id": 235323,
-            "follower_ids": [235323, 234],
-            "tags": ["enterprise", "printers"],
+            "submitter": "Michael_bolton@selu.edu"
         },
         {
             "id": 2,
             "created_at": "2015-07-20T22:55:29Z",
-            "updated_at": "2016-05-05T10:38:52Z",
-            "type": "incident",
             "subject": "Printer stopped working",
             "description": "Asking to load tray?? with what?",
-            "priority": "med",
             "status": "open",
             "recipient": "support_example@selu.edu",
-            "submitter": "Michael_bolton@selu.edu",
-            "assignee_id": 235323,
-            "follower_ids": [235323, 234],
-            "tags": ["enterprise", "printers"],
-            
+            "submitter": "Michael_bolton@selu.edu"
         }
     ]
 
@@ -63,13 +51,14 @@ app.get('/rest/ticket/:id', function(req, res){
 });
 
 /* this will create a ticket ? */
-app.post('/rest/ticket/', function(req, res){
+app.get('/rest', function(req, res){
     //res.send("Endpoint to create a new ticket");
-    const item = req.body;
-    console.log('Adding new items: ', item);
+    res.sendFile(__dirname + '/form.html');
+});
 
-    data.push(item);
-    res.json(tickets);
+app.post('/rest/ticket', function(req, res) {
+    tickets.push(req.body);
+    res.sendStatus(201);
 });
 
 app.listen(3000);

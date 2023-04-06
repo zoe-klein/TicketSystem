@@ -1,0 +1,33 @@
+<html>
+    <h1>Create a Ticket</h1>
+
+    <body>
+        <form action="/rest/ticket" method="POST">
+
+            <p> Time Created </p>
+            <input type="datetime-local" id="created_at" name="created_at" />
+
+            <p> Subject </p>
+            <input type="text" id="subject" name="subject" />
+
+            <p> Description of Problem </p>
+            <input type="text" id="description" name="description" />
+
+            <p> Status </p>
+            <input type="radio" id="open" name="status" />
+            <label> open </label>
+            <input type="radio" id="closed" name="status" />
+            <label> closed </label>
+
+            <p> Recipient </p>
+            <input type="email" id="recipient" name="recipient" />
+
+            <p> Submitter </p>
+            <input type="email" id="recipient" name="recipient" />
+
+            <br>
+            <br>
+            <input type="submit" value="Submit" />
+        </form>
+    </body>
+</html>
