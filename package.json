@@ -4,19 +4,21 @@
   "description": "cmps415 semester project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "monitor": "nodemon index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zoe-klein/TicketSystem.git"
   },
-  "author": "ZK",
+  "author": "Zoe Klein",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zoe-klein/TicketSystem/issues"
   },
   "homepage": "https://github.com/zoe-klein/TicketSystem#readme",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "express": "^4.18.2"
   }
 }
