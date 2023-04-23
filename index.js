@@ -4,30 +4,12 @@ const uri ="mongodb+srv://classuser:qBXgK1Y5j5w1iWZK@zkmdb.cen8f8i.mongodb.net/?
 var express = require('express');
 var app = express();
 var bodyparser = require('body-parser');
+var methodOverride = require('method-override');
+//var myForm = document.getElementById("myform");
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
-
-var tickets = [
-        {
-            "ticketId": 1,
-            "created_at": "2015-07-20T22:55:29Z",
-            "subject": "MFP not working right",
-            "description": "PC Load Letter? What does that even mean???",
-            "status": "open",
-            "recipient": "support_example@selu.edu",
-            "submitter": "Michael_bolton@selu.edu"
-        },
-        {
-            "ticketId": 2,
-            "created_at": "2015-07-20T22:55:29Z",
-            "subject": "Printer stopped working",
-            "description": "Asking to load tray?? with what?",
-            "status": "open",
-            "recipient": "support_example@selu.edu",
-            "submitter": "Michael_bolton@selu.edu"
-        }
-    ]
+app.use(methodOverride('_method'));
 
 /* this will be the home page */
 app.get('/', function(req, res){
@@ -83,11 +65,13 @@ app.get('/rest/ticket/:id', function(req, res){
 });
 
 /* this will create a ticket ? */
+// const form = 
 app.get('/rest', function(req, res){
     //res.send("Endpoint to create a new ticket");
     res.sendFile(__dirname + '/form.html');
 });
 
+//const createTicket = 
 app.post('/rest/ticket', function(req, res) {
     const client = new MongoClient(uri);
 
@@ -99,6 +83,63 @@ app.post('/rest/ticket', function(req, res) {
             //reads the form into ticket and then sends that to database
             const ticket = await tickets.insertOne(req.body);
             res.send(ticket);
+        } finally {
+            await client.close();
+        }
+    }
+    run().catch(console.dir);
+});
+
+//const updateTicket = 
+app.put('/rest/ticket', function(req, res) {
+    const client = new MongoClient(uri);
+
+    async function run() {
+        try {
+            //connect to database
+            const database = client.db("zkmdb");
+            const tickets = database.collection("TicketSystem");
+
+            //find ticket ID
+            const query = { ticketId: req.params.id};
+
+            //update ticket
+            const updateTicket = {$set: {
+                "id": req.params.id,
+                "created_at": req.params.created_at,
+                "subject": req.params.subject,
+                "description": req.params.description,
+                "recipient": req.params.recipient,
+                "submitter": req.params.submitter
+            }}
+
+            const result = await tickets.updateOneAndUpdate(query, updateTicket);
+
+            res.send(result);
+        } finally {
+            await client.close();
+        }
+    }
+    run().catch(console.dir);
+});
+
+app.delete('/rest/ticket/delete/:id', function(req, res) {
+    const client = new MongoClient(uri);
+
+    async function run() {
+        try {
+            //connect to database
+            const database = client.db("zkmdb");
+            const tickets = database.collection("TicketSystem");
+
+            //find ticket ID
+            const query = { ticketId: req.params.id};
+            const ticket = await tickets.find(query);
+
+            //delete
+            const deleteTicket = tickets.delete(ticket)
+            res.delete(deleteTicket);
+
         } finally {
             await client.close();
         }
