@@ -2,7 +2,10 @@
     <h1>Create a Ticket</h1>
 
     <body>
-        <form action="/rest/ticket" method="POST">
+        <form action="/rest/ticket/?_method" method="POST">
+
+            <p> Ticket ID </p>
+            <input type="text" id="ticketId" name="ticketId" />
 
             <p> Time Created </p>
             <input type="datetime-local" id="created_at" name="created_at" />
@@ -23,11 +26,15 @@
             <input type="email" id="recipient" name="recipient" />
 
             <p> Submitter </p>
-            <input type="email" id="recipient" name="recipient" />
+            <input type="email" id="submitter" name="submitter" />
 
             <br>
             <br>
-            <input type="submit" value="Submit" />
+            
+            <input type="submit" value="Submit" value="POST" />
+            <input type="hidden" name="?_method" value="PUT" />
+            <input type="submit" name="?_method" value="Update" />
+
         </form>
     </body>
 </html>
